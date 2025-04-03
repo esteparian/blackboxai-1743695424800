@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Denuncias Ciudadanas | Alerta 24 Vecinos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map { height: 300px; }
+        .upload-preview {
+            max-width: 200px;
+            max-height: 200px;
+        }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation Header -->
+    <nav class="bg-gray-800 px-6 py-4 shadow-lg">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <img src="https://images.pexels.com/photos/3761509/pexels-photo-3761509.jpeg" alt="Logo" class="w-10 h-10 rounded-full border-2 border-cyan-400">
+                <span class="text-xl font-bold text-white">Alerta 24 Vecinos</span>
+            </div>
+            <div class="flex items-center space-x-6">
+                <a href="dashboard.html" class="text-white hover:text-cyan-400">
+                    <i class="fas fa-home mr-1"></i> Inicio
+                </a>
+                <a href="denuncias.html" class="text-white font-semibold hover:text-cyan-400">
+                    <i class="fas fa-exclamation-circle mr-1"></i> Denuncias
+                </a>
+                <a href="profile.html" class="text-white hover:text-cyan-400">
+                    <i class="fas fa-user mr-1"></i> Perfil
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <!-- Form Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-cyan-500 p-6 text-white">
+                <h1 class="text-2xl font-bold">Denuncia Ciudadana</h1>
+                <p class="mt-1">Reporta incidentes en tu comunidad</p>
+            </div>
+
+            <!-- Complaint Form -->
+            <form id="complaintForm" class="p-6 space-y-8" enctype="multipart/form-data">
+                <!-- Category Selection -->
+                <div>
+                    <h2 class="text-lg font-semibold mb-4 text-gray-800 border-b pb-2">Tipo de Denuncia *</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <label class="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="category" value="Robo" class="h-4 w-4 text-blue-600" required>
+                            <span class="text-gray-700">Robo</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="category" value="Roturas y Servicios" class="h-4 w-4 text-blue-600">
+                            <span class="text-gray-700">Roturas y Servicios</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="category" value="Incidente Ambiental" class="h-4 w-4 text-blue-600">
+                            <span class="text-gray-700">Incidente Ambiental</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="category" value="Estafas" class="h-4 w-4 text-blue-600">
+                            <span class="text-gray-700">Estafas</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="category" value="Violencia de Género" class="h-4 w-4 text-blue-600">
+                            <span class="text-gray-700">Violencia de Género</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="category" value="Violencia en General" class="h-4 w-4 text-blue-600">
+                            <span class="text-gray-700">Violencia en General</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="category" value="Tránsito" class="h-4 w-4 text-blue-600">
+                            <span class="text-gray-700">Tránsito</span>
+                        </label>
+                        <label class="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="category" value="Otras Alertas" class="h-4 w-4 text-blue-600">
+                            <span class="text-gray-700">Otras Alertas</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Media Upload Section -->
+                <div>
+                    <h2 class="text-lg font-semibold mb-4 text-gray-800 border-b pb-2">Agregar Pruebas (Opcional)</h2>
+                    
+                    <!-- Photos -->
+                    <div class="mb-6">
+                        <h3 class="text-md font-medium text-gray-700 mb-2">Fotografías</h3>
+                        <div class="flex flex-wrap gap-4 mb-4" id="photoPreviews"></div>
+                        <div class="flex space-x-4">
+                            <label class="cursor-pointer bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100">
+                                <i class="fas fa-images mr-2"></i> Desde Galería
+                                <input type="file" id="photoUpload" accept="image/*" multiple class="hidden">
+                            </label>
+                            <label class="cursor-pointer bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100">
+                                <i class="fas fa-camera mr-2"></i> Tomar Foto
+                                <input type="file" id="cameraPhoto" accept="image/*" capture="environment" class="hidden">
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Videos -->
+                    <div class="mb-6">
+                        <h3 class="text-md font-medium text-gray-700 mb-2">Videos</h3>
+                        <div class="flex flex-wrap gap-4 mb-4" id="videoPreviews"></div>
+                        <div class="flex space-x-4">
+                            <label class="cursor-pointer bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100">
+                                <i class="fas fa-video mr-2"></i> Desde Galería
+                                <input type="file" id="videoUpload" accept="video/*" class="hidden">
+                            </label>
+                            <label class="cursor-pointer bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100">
+                                <i class="fas fa-video mr-2"></i> Grabar Video
+                                <input type="file" id="cameraVideo" accept="video/*" capture="camcorder" class="hidden">
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Audio -->
+                    <div class="mb-6">
+                        <h3 class="text-md font-medium text-gray-700 mb-2">Audio</h3>
+                        <div class="mb-4" id="audioPreview"></div>
+                        <div class="flex space-x-4">
+                            <label class="cursor-pointer bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100">
+                                <i class="fas fa-microphone-alt mr-2"></i> Grabar Audio
+                                <button type="button" id="recordAudio" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100">
+                                    <i class="fas fa-microphone mr-2"></i> Grabar
+                                </button>
+                            </label>
+                            <label class="cursor-pointer bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100">
+                                <i class="fas fa-file-audio mr-2"></i> Subir Audio
+                                <input type="file" id="audioUpload" accept="audio/*" class="hidden">
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Text -->
+                    <div class="mb-6">
+                        <h3 class="text-md font-medium text-gray-700 mb-2">Descripción</h3>
+                        <textarea id="description" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Describe el incidente con detalles..."></textarea>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="mb-6">
+                        <h3 class="text-md font-medium text-gray-700 mb-2">Ubicación</h3>
+                        <div id="map" class="rounded-lg border border-gray-300 mb-4"></div>
+                        <div class="flex items-center space-x-4">
+                            <button type="button" id="getLocation" class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100">
+                                <i class="fas fa-map-marker-alt mr-2"></i> Usar mi ubicación actual
+                            </button>
+                            <span id="locationStatus" class="text-sm text-gray-500">No se ha seleccionado ubicación</span>
+                        </div>
+                        <input type="hidden" id="coordinates" name="coordinates">
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-4 border-t border-gray-200">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                        <i class="fas fa-paper-plane mr-2"></i> Enviar Denuncia
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2024 Alerta 24 Vecinos. Todos los derechos reservados.</p>
+            <div class="flex space-x-4 justify-center mt-4">
+                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([19.4326, -99.1332], 12); // Default to Mexico City
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Location handling
+        document.getElementById('getLocation').addEventListener('click', () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const { latitude, longitude } = position.coords;
+                    document.getElementById('coordinates').value = `${latitude},${longitude}`;
+                    document.getElementById('locationStatus').textContent = 'Ubicación obtenida';
+                    map.setView([latitude, longitude], 15);
+                    L.marker([latitude, longitude]).addTo(map)
+                        .bindPopup('Tu ubicación actual').openPopup();
+                }, error => {
+                    console.error('Error getting location:', error);
+                    document.getElementById('locationStatus').textContent = 'Error al obtener ubicación';
+                });
+            } else {
+                document.getElementById('locationStatus').textContent = 'Geolocalización no soportada';
+            }
+        });
+
+        // Photo upload handling
+        document.getElementById('photoUpload').addEventListener('change', function(e) {
+            handleFiles(e.target.files, 'photoPreviews', 'image');
+        });
+        document.getElementById('cameraPhoto').addEventListener('change', function(e) {
+            handleFiles(e.target.files, 'photoPreviews', 'image');
+        });
+
+        // Video upload handling
+        document.getElementById('videoUpload').addEventListener('change', function(e) {
+            handleFiles(e.target.files, 'videoPreviews', 'video');
+        });
+        document.getElementById('cameraVideo').addEventListener('change', function(e) {
+            handleFiles(e.target.files, 'videoPreviews', 'video');
+        });
+
+        // Audio upload handling
+        document.getElementById('audioUpload').addEventListener('change', function(e) {
+            handleFiles(e.target.files, 'audioPreview', 'audio');
+        });
+
+        // File preview handler
+        function handleFiles(files, previewContainerId, type) {
+            const previewContainer = document.getElementById(previewContainerId);
+            
+            for (let file of files) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    if (type === 'image') {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'upload-preview rounded-lg border border-gray-200';
+                        previewContainer.appendChild(img);
+                    } else if (type === 'video') {
+                        const video = document.createElement('video');
+                        video.src = e.target.result;
+                        video.controls = true;
+                        video.className = 'upload-preview rounded-lg border border-gray-200';
+                        previewContainer.appendChild(video);
+                    } else if (type === 'audio') {
+                        previewContainer.innerHTML = `
+                            <audio controls class="w-full">
+                                <source src="${e.target.result}" type="${file.type}">
+                                Your browser does not support the audio element.
+                            </audio>
+                        `;
+                    }
+                }
+                
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Form submission
+        document.getElementById('complaintForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Validate category selection
+            if (!document.querySelector('input[name="category"]:checked')) {
+                alert('Por favor selecciona un tipo de denuncia');
+                return;
+            }
+
+            const formData = new FormData();
+            const category = document.querySelector('input[name="category"]:checked').value;
+            const description = document.getElementById('description').value;
+            const coordinates = document.getElementById('coordinates').value;
+            
+            formData.append('category', category);
+            formData.append('description', description);
+            formData.append('coordinates', coordinates);
+            
+            // Append files to form data
+            const photoUpload = document.getElementById('photoUpload');
+            if (photoUpload.files.length > 0) {
+                Array.from(photoUpload.files).forEach(file => {
+                    formData.append('photos', file);
+                });
+            }
+            
+            const videoUpload = document.getElementById('videoUpload');
+            if (videoUpload.files.length > 0) {
+                Array.from(videoUpload.files).forEach(file => {
+                    formData.append('videos', file);
+                });
+            }
+            
+            const audioUpload = document.getElementById('audioUpload');
+            if (audioUpload.files.length > 0) {
+                formData.append('audio', audioUpload.files[0]);
+            }
+
+            try {
+                const response = await fetch('/submit-denuncia', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    alert('Denuncia enviada exitosamente!');
+                    // Reset form
+                    this.reset();
+                    document.getElementById('photoPreviews').innerHTML = '';
+                    document.getElementById('videoPreviews').innerHTML = '';
+                    document.getElementById('audioPreview').innerHTML = '';
+                    document.getElementById('locationStatus').textContent = 'No se ha seleccionado ubicación';
+                    document.getElementById('coordinates').value = '';
+                    map.eachLayer(layer => {
+                        if (layer instanceof L.Marker) {
+                            map.removeLayer(layer);
+                        }
+                    });
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al enviar la denuncia');
+            }
+        });
+    </script>
+</body>
+</html>
