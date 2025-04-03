@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Alerta 24 Vecinos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .bg-tech-pattern {
+            background-image: url('https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation Header -->
+    <nav class="bg-gray-800 px-6 py-4 shadow-lg">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <img src="https://images.pexels.com/photos/3761509/pexels-photo-3761509.jpeg" alt="Logo" class="w-10 h-10 rounded-full border-2 border-cyan-400">
+                <span class="text-xl font-bold text-white">Alerta 24 Vecinos</span>
+            </div>
+            <div class="flex items-center space-x-6">
+                <a href="dashboard.html" class="text-white hover:text-cyan-400">
+                    <i class="fas fa-home mr-1"></i> Inicio
+                </a>
+                <a href="alerts.html" class="text-white hover:text-cyan-400">
+                    <i class="fas fa-bell mr-1"></i> Alertas
+                </a>
+                <a href="profile.html" class="text-white hover:text-cyan-400">
+                    <i class="fas fa-user mr-1"></i> Perfil
+                </a>
+                <div class="relative group">
+                    <button class="flex items-center space-x-1 text-white hover:text-cyan-400">
+                        <i class="fas fa-user-circle text-xl"></i>
+                        <span class="hidden md:inline">Usuario</span>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
+                        <a href="profile.html" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                            <i class="fas fa-user-edit mr-2"></i> Editar Perfil
+                        </a>
+                        <a href="index.html" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column - Profile Card -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="bg-gradient-to-r from-cyan-500 to-blue-600 p-4 text-white text-center">
+                        <img src="https://images.pexels.com/photos/733852/pexels-photo-733852.jpeg" alt="User" class="w-24 h-24 mx-auto rounded-full border-4 border-white">
+                        <h2 class="text-xl font-bold mt-2">Nombre Apellido</h2>
+                        <p class="text-sm">Ciudad, Barrio</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-500">Dirección</h3>
+                                <p class="mt-1 text-sm text-gray-900">Calle 123, Casa 4B</p>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-500">Teléfono</h3>
+                                <p class="mt-1 text-sm text-gray-900">+52 55 1234 5678</p>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-500">Email</h3>
+                                <p class="mt-1 text-sm text-gray-900">usuario@ejemplo.com</p>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <a href="profile.html" class="w-full block text-center bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-2 px-4 rounded transition duration-200">
+                                Editar Perfil
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="mt-6 bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Acciones Rápidas</h3>
+                    <div class="space-y-3">
+                        <a href="new-alert.html" class="flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg transition">
+                            <div class="bg-red-100 p-2 rounded-full">
+                                <i class="fas fa-exclamation-triangle text-red-500"></i>
+                            </div>
+                            <span class="text-gray-700">Reportar Emergencia</span>
+                        </a>
+                        <a href="alerts.html" class="flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg transition">
+                            <div class="bg-blue-100 p-2 rounded-full">
+                                <i class="fas fa-bell text-blue-500"></i>
+                            </div>
+                            <span class="text-gray-700">Ver Alertas Recientes</span>
+                        </a>
+                        <a href="neighbors.html" class="flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg transition">
+                            <div class="bg-green-100 p-2 rounded-full">
+                                <i class="fas fa-users text-green-500"></i>
+                            </div>
+                            <span class="text-gray-700">Vecinos Cercanos</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Main Dashboard -->
+            <div class="lg:col-span-2">
+                <!-- Welcome Banner -->
+                <div class="bg-gradient-to-r from-blue-600 to-cyan-500 rounded-lg shadow-md p-6 text-white">
+                    <h1 class="text-2xl font-bold">Bienvenido, Nombre</h1>
+                    <p class="mt-2">Tu comunidad está más segura con Alerta 24 Vecinos</p>
+                    <div class="mt-4 flex space-x-4">
+                        <div class="bg-white bg-opacity-20 p-3 rounded-lg">
+                            <p class="text-sm">Alertas hoy</p>
+                            <p class="text-xl font-bold">2</p>
+                        </div>
+                        <div class="bg-white bg-opacity-20 p-3 rounded-lg">
+                            <p class="text-sm">Vecinos activos</p>
+                            <p class="text-xl font-bold">48</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Alerts -->
+                <div class="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-800">Alertas Recientes</h2>
+                    </div>
+                    <div class="divide-y divide-gray-200">
+                        <!-- Alert Item -->
+                        <div class="p-6 hover:bg-gray-50 transition">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-red-100 p-3 rounded-full">
+                                    <i class="fas fa-exclamation-triangle text-red-500"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-sm font-medium text-gray-900">Intento de robo</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Calle Principal #45 - Hace 2 horas</p>
+                                    <p class="mt-2 text-sm text-gray-700">Se reportó un individuo sospechoso intentando forzar la puerta de una vivienda.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Alert Item -->
+                        <div class="p-6 hover:bg-gray-50 transition">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-yellow-100 p-3 rounded-full">
+                                    <i class="fas fa-car-crash text-yellow-500"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-sm font-medium text-gray-900">Accidente vehicular</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Esquina Calle Secundaria - Hace 5 horas</p>
+                                    <p class="mt-2 text-sm text-gray-700">Colisión entre dos vehículos, sin heridos graves.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4 border-t border-gray-200 text-center">
+                        <a href="alerts.html" class="text-sm font-medium text-cyan-600 hover:text-cyan-500">
+                            Ver todas las alertas
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Community Map -->
+                <div class="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-800">Mapa de la Comunidad</h2>
+                    </div>
+                    <div class="p-4">
+                        <div class="bg-gray-200 h-64 rounded-lg flex items-center justify-center">
+                            <p class="text-gray-500">Mapa interactivo de alertas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Alerta 24 Vecinos</h3>
+                    <p class="text-gray-400">Tu seguridad es nuestra prioridad. Conectando vecinos para comunidades más seguras.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Enlaces Rápidos</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">Iniciar Sesión</a></li>
+                        <li><a href="register.html" class="text-gray-400 hover:text-white">Registrarse</a></li>
+                        <li><a href="alerts.html" class="text-gray-400 hover:text-white">Alertas</a></li>
+                        <li><a href="profile.html" class="text-gray-400 hover:text-white">Perfil</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contacto</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-phone text-gray-400"></i>
+                            <span class="text-gray-400">55 1234 5678</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <i class="fas fa-envelope text-gray-400"></i>
+                            <span class="text-gray-400">contacto@alerta24vecinos.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2024 Alerta 24 Vecinos. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple demo functionality
+        document.querySelectorAll('.alert-item').forEach(item => {
+            item.addEventListener('click', () => {
+                alert('Mostraría detalles de la alerta');
+            });
+        });
+    </script>
+</body>
+</html>
