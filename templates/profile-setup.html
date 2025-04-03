@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completar Perfil | Alerta 24 Vecinos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .profile-bg {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                              url('https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+        .form-section {
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <div class="profile-bg min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden">
+            <!-- Header -->
+            <div class="bg-blue-600 p-6 text-center">
+                <img src="https://images.pexels.com/photos/3761509/pexels-photo-3761509.jpeg" 
+                     alt="Logo Alerta 24 Vecinos" 
+                     class="w-20 h-20 mx-auto rounded-full border-4 border-white shadow-md">
+                <h1 class="text-2xl font-bold text-white mt-4">Completa tu Perfil</h1>
+                <p class="text-white">Por favor completa esta información para mejorar tu experiencia</p>
+            </div>
+
+            <!-- Profile Form -->
+            <form id="profileForm" class="p-6 space-y-4">
+                <!-- Personal Information -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                        <input type="text" name="first_name" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Apellido</label>
+                        <input type="text" name="last_name" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Dirección</label>
+                    <input type="text" name="address" required 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+
+                <!-- Neighborhood -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Barrio</label>
+                        <input type="text" name="neighborhood" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Manzana</label>
+                        <input type="text" name="block" 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                </div>
+
+                <!-- Emergency Contacts -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Contactos de Emergencia</label>
+                    <div class="flex space-x-2">
+                        <input type="text" name="emergency_contact_name" placeholder="Nombre" 
+                               class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <input type="tel" name="emergency_contact_phone" placeholder="Teléfono" 
+                               class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <button type="button" onclick="addEmergencyContact()" 
+                            class="text-blue-600 text-sm flex items-center">
+                        <i class="fas fa-plus-circle mr-1"></i> Agregar otro contacto
+                    </button>
+                </div>
+
+                <!-- Profile Photo -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Foto de Perfil</label>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                            <i class="fas fa-user text-gray-400 text-2xl" id="profileIcon"></i>
+                            <img id="profilePreview" class="hidden w-full h-full object-cover">
+                        </div>
+                        <input type="file" id="profilePhoto" name="profile_photo" accept="image/*" 
+                               class="hidden" onchange="previewProfilePhoto(this)">
+                        <button type="button" onclick="document.getElementById('profilePhoto').click()" 
+                                class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition duration-300">
+                            Seleccionar Foto
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-4">
+                    <button type="submit" 
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
+                        Guardar Perfil
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Profile photo preview
+        function previewProfilePhoto(input) {
+            const preview = document.getElementById('profilePreview');
+            const icon = document.getElementById('profileIcon');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    icon.classList.add('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Add emergency contact
+        function addEmergencyContact() {
+            const container = document.querySelector('div[class*="space-y-2"]');
+            const newContact = document.createElement('div');
+            newContact.className = 'flex space-x-2';
+            newContact.innerHTML = `
+                <input type="text" name="emergency_contact_name" placeholder="Nombre" 
+                       class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <input type="tel" name="emergency_contact_phone" placeholder="Teléfono" 
+                       class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            `;
+            container.insertBefore(newContact, container.lastElementChild);
+        }
+
+        // Form submission
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            try {
+                const response = await fetch('/api/profile/setup', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                if (result.status === 'success') {
+                    window.location.href = '/dashboard';
+                } else {
+                    alert(result.message || 'Error al guardar el perfil');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al conectar con el servidor');
+            }
+        });
+    </script>
+</body>
+</html>
