@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros de Actividad | Alerta 24 Vecinos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+    <!-- Reuse sidebar from index2.html -->
+    <div class="flex h-screen">
+        <div class="sidebar bg-gray-800 text-white w-64 flex flex-col">
+            <!-- Sidebar content same as index2.html -->
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content flex-1 overflow-y-auto">
+            <!-- Header -->
+            <header class="bg-white shadow-sm">
+                <div class="px-6 py-4 flex items-center justify-between">
+                    <h1 class="text-xl font-semibold text-gray-800">Registros de Actividad</h1>
+                    <div class="flex space-x-4">
+                        <div class="relative">
+                            <input type="text" id="searchLogs" placeholder="Buscar..." 
+                                   class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                        <button id="exportLogs" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            <i class="fas fa-download mr-2"></i> Exportar
+                        </button>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Filters -->
+            <div class="px-6 py-4 bg-white shadow-sm border-b">
+                <div class="flex flex-wrap gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Acción</label>
+                        <select id="actionFilter" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <option value="">Todos</option>
+                            <option value="login">Inicio de sesión</option>
+                            <option value="logout">Cierre de sesión</option>
+                            <option value="create_admin">Creación de usuario</option>
+                            <option value="delete_admin">Eliminación de usuario</option>
+                            <option value="password_reset">Cambio de contraseña</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Desde</label>
+                        <input type="date" id="dateFrom" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Hasta</label>
+                        <input type="date" id="dateTo" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div class="self-end">
+                        <button id="applyFilters" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                            Aplicar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Activity Logs -->
+            <div class="px-6 py-4">
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuario</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acción</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detalles</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IP</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="logsTableBody">
+                                <!-- Logs will be loaded dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                        <div class="text-sm text-gray-500">
+                            Mostrando <span class="font-medium">1</span> a <span class="font-medium">20</span> de <span class="font-medium">1248</span> registros
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Anterior</button>
+                            <button class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Siguiente</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load activity logs
+        async function loadActivityLogs(filters = {}) {
+            try {
+                // Build query string from filters
+                const query = new URLSearchParams();
+                if (filters.action) query.append('action', filters.action);
+                if (filters.dateFrom) query.append('dateFrom', filters.dateFrom);
+                if (filters.dateTo) query.append('dateTo', filters.dateTo);
+                
+                const response = await fetch(`/api/admin/activity-logs?${query.toString()}`);
+                const logs = await response.json();
+                
+                const tableBody = document.getElementById('logsTableBody');
+                tableBody.innerHTML = '';
+                
+                logs.forEach(log => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">${log.username}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 text-xs rounded-full ${getActionColor(log.action)}">
+                                ${formatAction(log.action)}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-900">${log.details || '-'}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-500">${log.ip_address}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-500">${new Date(log.timestamp).toLocaleString()}</div>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+                
+            } catch (error) {
+                console.error('Error loading activity logs:', error);
+            }
+        }
+
+        // Helper functions
+        function formatAction(action) {
+            const actions = {
+                'login': 'Inicio de sesión',
+                'logout': 'Cierre de sesión',
+                'create_admin': 'Crear usuario',
+                'delete_admin': 'Eliminar usuario',
+                'password_reset': 'Cambio de contraseña'
+            };
+            return actions[action] || action;
+        }
+
+        function getActionColor(action) {
+            const colors = {
+                'login': 'bg-green-100 text-green-800',
+                'logout': 'bg-blue-100 text-blue-800',
+                'create_admin': 'bg-purple-100 text-purple-800',
+                'delete_admin': 'bg-red-100 text-red-800',
+                'password_reset': 'bg-yellow-100 text-yellow-800'
+            };
+            return colors[action] || 'bg-gray-100 text-gray-800';
+        }
+
+        // Apply filters
+        document.getElementById('applyFilters').addEventListener('click', () => {
+            const filters = {
+                action: document.getElementById('actionFilter').value,
+                dateFrom: document.getElementById('dateFrom').value,
+                dateTo: document.getElementById('dateTo').value
+            };
+            loadActivityLogs(filters);
+        });
+
+        // Export logs
+        document.getElementById('exportLogs').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/api/admin/activity-logs/export');
+                const blob = await response.blob();
+                
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'registros_actividad.csv';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                
+            } catch (error) {
+                console.error('Error exporting logs:', error);
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadActivityLogs();
+        });
+    </script>
+</body>
+</html>
