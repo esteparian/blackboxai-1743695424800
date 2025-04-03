@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil | Alerta 24 Vecinos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .floating-label {
+            @apply absolute left-3 -top-3 bg-white px-1 text-sm text-gray-600 transition-all;
+        }
+        input:focus + .floating-label,
+        input:not(:placeholder-shown) + .floating-label,
+        select:focus + .floating-label,
+        select:not([value=""]):not(:focus) + .floating-label {
+            @apply text-blue-500;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation Header -->
+    <nav class="bg-gray-800 px-6 py-4 shadow-lg">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <img src="https://images.pexels.com/photos/3761509/pexels-photo-3761509.jpeg" alt="Logo" class="w-10 h-10 rounded-full border-2 border-cyan-400">
+                <span class="text-xl font-bold text-white">Alerta 24 Vecinos</span>
+            </div>
+            <div class="flex items-center space-x-6">
+                <a href="dashboard.html" class="text-white hover:text-cyan-400">
+                    <i class="fas fa-home mr-1"></i> Inicio
+                </a>
+                <a href="alerts.html" class="text-white hover:text-cyan-400">
+                    <i class="fas fa-bell mr-1"></i> Alertas
+                </a>
+                <a href="profile.html" class="text-white hover:text-cyan-400">
+                    <i class="fas fa-user mr-1"></i> Perfil
+                </a>
+                <a href="index.html" class="text-white hover:text-cyan-400">
+                    <i class="fas fa-sign-out-alt mr-1"></i> Salir
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <!-- Profile Header -->
+                <div class="bg-gradient-to-r from-cyan-500 to-blue-600 p-6 text-white">
+                    <div class="flex items-center space-x-6">
+                        <div class="relative">
+                            <img src="https://images.pexels.com/photos/733852/pexels-photo-733852.jpeg" alt="User" class="w-24 h-24 rounded-full border-4 border-white">
+                            <button class="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-md text-blue-600 hover:bg-blue-50">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-bold">Editar Perfil</h1>
+                            <p class="mt-1">Actualiza tu información personal</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Form -->
+                <form class="p-6 space-y-8">
+                    <!-- Personal Information Section -->
+                    <div>
+                        <h2 class="text-lg font-semibold mb-6 text-gray-800 border-b pb-2">Información Personal</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Name -->
+                            <div class="relative">
+                                <input type="text" id="edit-nombre" placeholder=" " value="Nombre" 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <label for="edit-nombre" class="floating-label">Nombre *</label>
+                            </div>
+                            
+                            <!-- Last Name -->
+                            <div class="relative">
+                                <input type="text" id="edit-apellido" placeholder=" " value="Apellido" 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <label for="edit-apellido" class="floating-label">Apellido *</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Address Section -->
+                    <div>
+                        <h2 class="text-lg font-semibold mb-6 text-gray-800 border-b pb-2">Dirección</h2>
+                        <div class="space-y-6">
+                            <!-- City -->
+                            <div class="relative">
+                                <input type="text" id="edit-ciudad" placeholder=" " value="Ciudad" 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <label for="edit-ciudad" class="floating-label">Ciudad *</label>
+                            </div>
+                            
+                            <!-- Neighborhood -->
+                            <div class="relative">
+                                <input type="text" id="edit-barrio" placeholder=" " value="Barrio" 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <label for="edit-barrio" class="floating-label">Barrio *</label>
+                            </div>
+                            
+                            <!-- Address Details -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="relative">
+                                    <input type="text" id="edit-casa" placeholder=" " value="Casa 4B" 
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <label for="edit-casa" class="floating-label">Casa/Apto</label>
+                                </div>
+                                <div class="relative">
+                                    <input type="text" id="edit-piso" placeholder=" " 
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <label for="edit-piso" class="floating-label">Piso (opcional)</label>
+                                </div>
+                                <div class="relative">
+                                    <input type="text" id="edit-cp" placeholder=" " value="12345" 
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <label for="edit-cp" class="floating-label">Código Postal</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div>
+                        <h2 class="text-lg font-semibold mb-6 text-gray-800 border-b pb-2">Contacto</h2>
+                        <div class="space-y-6">
+                            <!-- Email -->
+                            <div class="relative">
+                                <input type="email" id="edit-email" placeholder=" " value="usuario@ejemplo.com" 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <label for="edit-email" class="floating-label">Email *</label>
+                            </div>
+                            
+                            <!-- Phone -->
+                            <div class="relative">
+                                <input type="tel" id="edit-telefono" placeholder=" " value="5512345678" 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    pattern="[0-9]{10}">
+                                <label for="edit-telefono" class="floating-label">Teléfono Principal *</label>
+                            </div>
+                            
+                            <!-- Alternate Phone -->
+                            <div class="relative">
+                                <input type="tel" id="edit-telefono-alt" placeholder=" " 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    pattern="[0-9]{10}">
+                                <label for="edit-telefono-alt" class="floating-label">Teléfono Alternativo</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Optional Fields -->
+                    <div>
+                        <h2 class="text-lg font-semibold mb-6 text-gray-800 border-b pb-2">Información Adicional (Opcional)</h2>
+                        <div class="relative">
+                            <input type="text" id="edit-doc" placeholder=" " 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <label for="edit-doc" class="floating-label">Documento de Identidad</label>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+                        <a href="dashboard.html" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                            Cancelar
+                        </a>
+                        <button type="submit" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition duration-200">
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Security Section -->
+            <div class="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">Seguridad</h2>
+                </div>
+                <div class="p-6 space-y-6">
+                    <!-- Change Password -->
+                    <div>
+                        <h3 class="text-md font-medium text-gray-700 mb-4">Cambiar Contraseña</h3>
+                        <div class="space-y-4">
+                            <div class="relative">
+                                <input type="password" id="current-password" placeholder=" " 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <label for="current-password" class="floating-label">Contraseña Actual *</label>
+                            </div>
+                            <div class="relative">
+                                <input type="password" id="new-password" placeholder=" " 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <label for="new-password" class="floating-label">Nueva Contraseña *</label>
+                            </div>
+                            <div class="relative">
+                                <input type="password" id="confirm-new-password" placeholder=" " 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <label for="confirm-new-password" class="floating-label">Confirmar Nueva Contraseña *</label>
+                            </div>
+                        </div>
+                        <button class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm">
+                            Actualizar Contraseña
+                        </button>
+                    </div>
+
+                    <!-- Two-Factor Authentication -->
+                    <div>
+                        <h3 class="text-md font-medium text-gray-700 mb-4">Autenticación de Dos Factores</h3>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Protege tu cuenta con un segundo factor de autenticación</p>
+                            </div>
+                            <button class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm">
+                                Activar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2024 Alerta 24 Vecinos. Todos los derechos reservados.</p>
+            <div class="flex space-x-4 justify-center mt-4">
+                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const requiredFields = document.querySelectorAll('input[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('border-red-500');
+                    isValid = false;
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                alert('Por favor complete todos los campos obligatorios (*)');
+            } else {
+                // In a real app, this would submit to server
+                alert('Cambios guardados exitosamente!');
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        // Remove error class when typing
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.classList.remove('border-red-500');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
