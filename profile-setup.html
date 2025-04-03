@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completar Perfil | Alerta 24 Vecinos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .floating-label {
+            @apply absolute left-3 -top-3 bg-white px-1 text-sm text-gray-600 transition-all;
+        }
+        input:focus + .floating-label,
+        input:not(:placeholder-shown) + .floating-label {
+            @apply text-blue-500;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-2xl mx-auto p-6">
+        <div class="text-center mb-8">
+            <img src="https://images.pexels.com/photos/3761509/pexels-photo-3761509.jpeg" alt="Logo" class="w-24 h-24 mx-auto mb-4 rounded-full border-2 border-blue-500">
+            <h1 class="text-2xl font-bold text-gray-800">Completa tu perfil</h1>
+            <p class="text-gray-600">Necesitamos esta información para brindarte un mejor servicio</p>
+        </div>
+
+        <form class="space-y-6 bg-white p-8 rounded-lg shadow-md">
+            <!-- Personal Information Section -->
+            <div>
+                <h2 class="text-lg font-semibold mb-4 text-gray-800 border-b pb-2">Información Personal</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Name -->
+                    <div class="relative">
+                        <input type="text" id="nombre" placeholder=" " required 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <label for="nombre" class="floating-label">Nombre *</label>
+                    </div>
+                    
+                    <!-- Last Name -->
+                    <div class="relative">
+                        <input type="text" id="apellido" placeholder=" " required 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <label for="apellido" class="floating-label">Apellido *</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address Section -->
+            <div>
+                <h2 class="text-lg font-semibold mb-4 text-gray-800 border-b pb-2">Dirección</h2>
+                <div class="space-y-6">
+                    <!-- City -->
+                    <div class="relative">
+                        <input type="text" id="ciudad" placeholder=" " required 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <label for="ciudad" class="floating-label">Ciudad *</label>
+                    </div>
+                    
+                    <!-- Neighborhood -->
+                    <div class="relative">
+                        <input type="text" id="barrio" placeholder=" " required 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <label for="barrio" class="floating-label">Barrio *</label>
+                    </div>
+                    
+                    <!-- Address Details -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="relative">
+                            <input type="text" id="casa" placeholder=" " 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <label for="casa" class="floating-label">Casa/Apto</label>
+                        </div>
+                        <div class="relative">
+                            <input type="text" id="piso" placeholder=" " 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <label for="piso" class="floating-label">Piso (opcional)</label>
+                        </div>
+                        <div class="relative">
+                            <input type="text" id="cp" placeholder=" " 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <label for="cp" class="floating-label">Código Postal</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div>
+                <h2 class="text-lg font-semibold mb-4 text-gray-800 border-b pb-2">Contacto</h2>
+                <div class="space-y-6">
+                    <!-- Email -->
+                    <div class="relative">
+                        <input type="email" id="email" placeholder=" " required 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <label for="email" class="floating-label">Email *</label>
+                    </div>
+                    
+                    <!-- Phone -->
+                    <div class="relative">
+                        <input type="tel" id="telefono" placeholder=" " required 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            pattern="[0-9]{10}">
+                        <label for="telefono" class="floating-label">Teléfono Principal *</label>
+                    </div>
+                    
+                    <!-- Alternate Phone -->
+                    <div class="relative">
+                        <input type="tel" id="telefono_alt" placeholder=" " 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            pattern="[0-9]{10}">
+                        <label for="telefono_alt" class="floating-label">Teléfono Alternativo</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optional Fields -->
+            <div>
+                <h2 class="text-lg font-semibold mb-4 text-gray-800 border-b pb-2">Información Adicional (Opcional)</h2>
+                <div class="relative">
+                    <input type="text" id="doc_id" placeholder=" " 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <label for="doc_id" class="floating-label">Documento de Identidad</label>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="pt-4">
+                <button type="submit" 
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                    Guardar y Continuar
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const requiredFields = document.querySelectorAll('input[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('border-red-500');
+                    isValid = false;
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                alert('Por favor complete todos los campos obligatorios (*)');
+            } else {
+                // In a real app, this would submit to server
+                alert('Perfil completado exitosamente!');
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        // Remove error class when typing
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.classList.remove('border-red-500');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
