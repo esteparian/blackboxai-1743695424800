@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro | Alerta 24 Vecinos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .bg-tech-pattern {
+            background-image: url('https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center justify-center">
+            <!-- Left Column (Image) - Hidden on mobile -->
+            <div class="hidden md:block md:w-1/2 bg-tech-pattern h-screen rounded-l-xl"></div>
+
+            <!-- Right Column (Form) -->
+            <div class="w-full md:w-1/2 bg-gray-800 p-8 rounded-lg md:rounded-l-none md:rounded-r-xl">
+                <!-- Logo and Title -->
+                <div class="text-center mb-8">
+                    <img src="https://images.pexels.com/photos/3761509/pexels-photo-3761509.jpeg" alt="Alerta 24 Vecinos Logo" class="w-32 h-32 mx-auto mb-4 rounded-full border-2 border-cyan-400">
+                    <h1 class="text-3xl font-bold text-cyan-400">Registro</h1>
+                    <p class="text-gray-400 mt-2">Crea tu cuenta en pocos pasos</p>
+                </div>
+
+                <!-- Registration Form -->
+                <form id="registerForm" class="space-y-6">
+                    <!-- Password Fields -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-300">Contraseña *</label>
+                        <div class="mt-1 relative">
+                            <input id="password" name="password" type="password" required 
+                                class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent placeholder-gray-400"
+                                placeholder="••••••••">
+                            <button type="button" class="absolute right-3 top-3 text-gray-400 hover:text-cyan-400">
+                                <i class="far fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="confirmPassword" class="block text-sm font-medium text-gray-300">Confirmar Contraseña *</label>
+                        <div class="mt-1 relative">
+                            <input id="confirmPassword" name="confirmPassword" type="password" required 
+                                class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent placeholder-gray-400"
+                                placeholder="••••••••">
+                        </div>
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div class="flex items-center">
+                        <input id="terms" name="terms" type="checkbox" required 
+                            class="h-4 w-4 text-cyan-400 focus:ring-cyan-400 border-gray-600 rounded">
+                        <label for="terms" class="ml-2 block text-sm text-gray-300">
+                            Acepto los <a href="#" class="text-cyan-400 hover:text-cyan-300">Términos y Condiciones</a>
+                        </label>
+                    </div>
+
+                    <!-- CAPTCHA -->
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <p class="text-sm text-gray-300 mb-2">Por favor, verifica que no eres un robot:</p>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-32 h-10 bg-gray-600 rounded flex items-center justify-center">
+                                <span class="text-xs">CAPTCHA</span>
+                            </div>
+                            <input type="checkbox" id="captcha" required class="w-4 h-4 text-cyan-400 rounded focus:ring-cyan-400">
+                            <label for="captcha" class="text-sm text-gray-300">No soy un robot</label>
+                        </div>
+                    </div>
+
+                    <!-- Register Button -->
+                    <div>
+                        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-400">
+                            Registrarse
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Login Link -->
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-gray-400">
+                        ¿Ya tienes una cuenta? <a href="index.html" class="font-medium text-cyan-400 hover:text-cyan-300">Inicia sesión</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        document.querySelector('.fa-eye').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this;
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+
+        // Form submission and redirect
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate password match
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Las contraseñas no coinciden');
+                return;
+            }
+
+            // In a real app, this would submit to server
+            // For demo, redirect to profile setup
+            window.location.href = 'profile-setup.html';
+        });
+    </script>
+</body>
+</html>
