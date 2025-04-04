@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Alerta 24 Vecinos{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex items-center justify-between mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Panel de Control</h1>
+        <div class="flex items-center space-x-4">
+            <span class="text-sm text-gray-600">Bienvenido, Usuario</span>
+            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                <i class="fas fa-user text-blue-600"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Tarjeta de Alertas -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <div class="flex items-center mb-4">
+                <div class="p-3 rounded-full bg-red-100 mr-4">
+                    <i class="fas fa-bell text-red-600"></i>
+                </div>
+                <h2 class="text-xl font-semibold">Alertas Recientes</h2>
+            </div>
+            <!-- Contenido de alertas -->
+        </div>
+
+        <!-- Tarjeta de Vecinos -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <div class="flex items-center mb-4">
+                <div class="p-3 rounded-full bg-green-100 mr-4">
+                    <i class="fas fa-users text-green-600"></i>
+                </div>
+                <h2 class="text-xl font-semibold">Vecinos Activos</h2>
+            </div>
+            <!-- Contenido de vecinos -->
+        </div>
+
+        <!-- Tarjeta de Reportes -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <div class="flex items-center mb-4">
+                <div class="p-3 rounded-full bg-blue-100 mr-4">
+                    <i class="fas fa-flag text-blue-600"></i>
+                </div>
+                <h2 class="text-xl font-semibold">Mis Reportes</h2>
+            </div>
+            <!-- Contenido de reportes -->
+        </div>
+    </div>
+</div>
+{% endblock %}
