@@ -71,45 +71,124 @@ def login_required(f):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        data = request.get_json()
-        identifier = data.get('identifier')  # Can be email or phone
-        password = data.get('password').encode('utf-8')
-        
-        with get_db_connection() as conn:
-            user = conn.execute(
-                'SELECT * FROM users WHERE email = ? OR phone = ?', 
-                (identifier, identifier)
-            ).fetchone()
+        try:
+            data = request.get_json()
+            identifier = data.get('identifier')
+            password = data.get('password').encode('utf-8')
             
-            if user and bcrypt.checkpw(password, user['password']):
-                session['user_id'] = user['id']
-                return jsonify({'status': 'success', 'redirect': '/dashboard'})
-            return jsonify({'status': 'error', 'message': 'Credenciales inválidas'}), 401
+            with get_db_connection() as conn:
+                user = conn.execute(
+                    'SELECT * FROM users WHERE email = ? OR phone = ?', 
+                    (identifier, identifier)
+                ).fetchone()
+                
+                if user and bcrypt.checkpw(password, user['password']):
+                    session['user_id'] = user['id']
+                    session['user_email'] = user['email']
+                    session['user_name'] = user['fullname']
+                    return jsonify({
+                        'status': 'success', 
+                        'redirect': '/dashboard',
+                        'user': {
+                            'name': user['fullname'],
+                            'email': user['email']
+                        }
+                    })
+                return jsonify({
+                    'status': 'error', 
+                    'message': 'Correo/telefono o contraseña incorrectos'
+                }), 401
+                
+        except Exception as e:
+            return jsonify({
+                'status': 'error',
+                'message': 'Error en el servidor'
+            }), 500
     
     return render_template('user_login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        data = request.form
-        fullname = data.get('fullname')
-        email = data.get('email')
-        phone = data.get('phone')
-        password = bcrypt.hashpw(data.get('password').encode('utf-8'), bcrypt.gensalt())
-        
         try:
+            if not request.is_json:
+                return jsonify({'status': 'error', 'message': 'Content-Type must be application/json'}), 400
+                
+            data = request.get_json()
+            if not all([data.get('fullname'), data.get('email'), data.get('phone'), data.get('password')]):
+                return jsonify({'status': 'error', 'message': 'Todos los campos son requeridos'}), 400
+                
+            fullname = data['fullname']
+            email = data['email']
+            phone = data['phone']
+            password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
+            
             with get_db_connection() as conn:
                 conn.execute(
-                    'INSERT INTO users (fullname, email, phone, password) VALUES (?, ?, ?, ?)',
+                    'INSERT INTO users (fullname, email, phone, password, verified) VALUES (?, ?, ?, ?, 1)',
                     (fullname, email, phone, password)
                 )
-                # Send verification email
-                send_verification_email(email)
-                return redirect(url_for('verify_email'))
+                user_id = conn.execute('SELECT last_insert_rowid()').fetchone()[0]
+                
+                session['user_id'] = user_id
+                session['user_email'] = email
+                session['user_name'] = fullname
+                
+                return jsonify({
+                    'status': 'success',
+                    'redirect': '/profile/setup',
+                    'user': {
+                        'name': fullname,
+                        'email': email
+                    }
+                })
+                
         except sqlite3.IntegrityError:
             return jsonify({'status': 'error', 'message': 'El correo o teléfono ya está registrado'}), 400
+        except Exception as e:
+            app.logger.error(f"Error en registro: {str(e)}")
+            return jsonify({'status': 'error', 'message': 'Error en el servidor'}), 500
     
     return render_template('register.html')
+
+@app.route('/verify', methods=['GET', 'POST'])
+def verify():
+    if request.method == 'POST':
+        try:
+            data = request.get_json()
+            code = data.get('code')
+            
+            if not code or len(code) != 6:
+                return jsonify({'status': 'error', 'message': 'Código inválido'}), 400
+                
+            if 'verification_code' not in session or 'pending_user' not in session:
+                return jsonify({'status': 'error', 'message': 'Solicitud expirada'}), 400
+                
+            if code != session['verification_code']:
+                return jsonify({'status': 'error', 'message': 'Código incorrecto'}), 400
+                
+            # Verificación exitosa
+            user_id = session['pending_user']
+            with get_db_connection() as conn:
+                conn.execute(
+                    'UPDATE users SET verified = 1 WHERE id = ?',
+                    (user_id,)
+                )
+            
+            session['user_id'] = user_id
+            session.pop('verification_code', None)
+            session.pop('pending_user', None)
+            
+            return jsonify({
+                'status': 'success',
+                'redirect': '/login',
+                'message': 'Verificación exitosa. Por favor inicia sesión.'
+            })
+            
+        except Exception as e:
+            return jsonify({'status': 'error', 'message': 'Error en el servidor'}), 500
+    
+    return render_template('verify.html')
 
 @app.route('/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
@@ -265,7 +344,18 @@ def profile_setup():
     # GET request - show profile setup form
     return render_template('profile-setup.html')
 
-@app.route('/dashboard')
+@app.route('/health')
+def health_check():
+    """Endpoint de verificación de salud"""
+    try:
+        # Verificar conexión a la base de datos
+        with get_db_connection() as conn:
+            conn.execute('SELECT 1')
+        return jsonify({'status': 'healthy'}), 200
+    except Exception as e:
+        return jsonify({'status': 'unhealthy', 'error': str(e)}), 500
+
+@app.route('/dashboard') 
 @login_required
 def dashboard():
     # Check if profile is complete
@@ -317,6 +407,14 @@ def send_password_reset_email(email, token):
     pass
 
 # Error handlers
+@app.route('/')
+def index():
+    try:
+        return redirect(url_for('login'))
+    except Exception as e:
+        app.logger.error(f"Error en redirección: {str(e)}")
+        return render_template('user_login.html')
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
@@ -413,11 +511,44 @@ def create_default_error_template(template_name):
 
 if __name__ == '__main__':
     from waitress import serve
+    import logging
+    import socket
+    
+    # Configuración avanzada de logging
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s [%(levelname)s] %(message)s',
+        handlers=[
+            logging.FileHandler('app.log', mode='a'),
+            logging.StreamHandler()
+        ]
+    )
+    
+    logger = logging.getLogger(__name__)
+    
+    # Verificar disponibilidad del puerto
+    def check_port(port):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            return s.connect_ex(('localhost', port)) != 0
+    
+    PORT = 8001
+    if not check_port(PORT):
+        logger.error(f'El puerto {PORT} está en uso')
+        PORT = 8002  # Puerto alternativo
+    
+    # Configuración optimizada para IPv4
+    from waitress import serve
+    logger.info(f'Iniciando servidor en puerto {PORT} para IPv4')
     serve(
         app,
         host='0.0.0.0',
-        port=8001,
-        threads=4,
-        url_prefix='',
-        clear_untrusted_proxy_headers=True
+        port=PORT,
+        threads=8,
+        channel_timeout=120,
+        connection_limit=2000,
+        cleanup_interval=60,
+        asyncore_use_poll=True,
+        expose_tracebacks=False,
+        ident='AlertaVecinosServer'
     )
+    logger.info(f'Servidor iniciado en puerto {PORT} (IPv4 e IPv6)')
