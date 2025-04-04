@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión | Alerta 24 Vecinos</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% extends "base.html" %}
+
+{% block title %}Iniciar Sesión | Alerta 24 Vecinos{% endblock %}
+
+{% block extra_head %}
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         .login-bg {
@@ -21,8 +18,9 @@
             display: block;
         }
     </style>
-</head>
-<body class="font-sans">
+{% endblock %}
+
+{% block content %}
     <div class="login-bg min-h-screen flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden">
             <!-- Header -->
@@ -140,9 +138,28 @@
                             <span class="flex-shrink mx-4 text-gray-500">o</span>
                             <div class="flex-grow border-t border-gray-300"></div>
                         </div>
-                        <p class="text-center text-sm text-gray-600">
-                            ¿No tienes cuenta? <a href="/register" class="text-blue-600 hover:underline">Regístrate</a>
-                        </p>
+                        <div class="text-center mt-6">
+                            <h3 class="text-lg font-medium text-gray-800 mb-4">¿Eres nuevo en Alerta Vecinos?</h3>
+                            <a href="/register" class="inline-block w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
+                                <i class="fas fa-user-plus mr-2"></i> Crear cuenta nueva
+                            </a>
+                            <p class="mt-4 text-sm text-gray-600">
+                                Al registrarte aceptas nuestros 
+                                <a href="/terms" class="text-blue-600 hover:underline">Términos</a> y 
+                                <a href="/privacy" class="text-blue-600 hover:underline">Privacidad</a>
+                            </p>
+                            <div class="flex items-center justify-center space-x-4">
+                                <span class="text-sm text-gray-500">o</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <a href="/social-login/google" class="bg-white border text-gray-700 py-2 px-4 rounded flex items-center justify-center">
+                                    <i class="fab fa-google mr-2"></i> Google
+                                </a>
+                                <a href="/social-login/facebook" class="bg-white border text-gray-700 py-2 px-4 rounded flex items-center justify-center">
+                                    <i class="fab fa-facebook mr-2"></i> Facebook
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -192,5 +209,27 @@
             console.log("Phone form submitted");
         });
     </script>
-</body>
-</html>
+{% endblock %}
+
+{% block scripts %}
+    <!-- JavaScript específico de login -->
+    <script>
+        // Tab functionality
+        function openTab(evt, tabName) {
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+
+            const tabButtons = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove("active");
+            }
+
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Resto del código JavaScript...
+    </script>
+{% endblock %}
