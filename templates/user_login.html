@@ -3,7 +3,7 @@
 {% block title %}Iniciar Sesión | Alerta 24 Vecinos{% endblock %}
 
 {% block extra_head %}
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
     <style>
         .login-bg {
             background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
@@ -196,18 +196,86 @@
             }
         }
 
-        // Form submission
-        document.getElementById('emailForm').addEventListener('submit', function(e) {
+        // Form submission handlers
+        document.getElementById('emailForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            // Add form submission logic here
-            console.log("Email form submitted");
+            const formData = {
+                identifier: this.email.value,
+                password: this.password.value
+            };
+            
+            try {
+                const response = await fetch('/user/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    window.location.href = data.redirect || '/dashboard';
+                } else {
+                    showError(data.message || 'Error al iniciar sesión');
+                }
+            } catch (error) {
+                showError('Error de conexión');
+            }
         });
 
-        document.getElementById('phoneForm').addEventListener('submit', function(e) {
+        document.getElementById('phoneForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            // Add form submission logic here
-            console.log("Phone form submitted");
+            const formData = {
+                identifier: this.phone.value,
+                password: this.password.value
+            };
+            
+            try {
+                const response = await fetch('/user/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    window.location.href = data.redirect || '/dashboard';
+                } else {
+                    showError(data.message || 'Error al iniciar sesión');
+                }
+            } catch (error) {
+                showError('Error de conexión');
+            }
         });
+
+        // Social login handlers
+        document.querySelector('.fa-google').closest('button').addEventListener('click', () => {
+            window.location.href = '/social-login/google';
+        });
+
+        document.querySelector('.fa-facebook-f').closest('button').addEventListener('click', () => {
+            window.location.href = '/social-login/facebook';
+        });
+
+        // Error display function
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4';
+            errorDiv.innerHTML = `<p>${message}</p>`;
+            
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                if (form.parentElement.classList.contains('active')) {
+                    form.prepend(errorDiv);
+                    setTimeout(() => errorDiv.remove(), 5000);
+                }
+            });
+        }
     </script>
 {% endblock %}
 
