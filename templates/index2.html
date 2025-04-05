@@ -1,20 +1,19 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Alerta 24 Vecinos</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body class="bg-gray-100">
-    <div class="flex flex-col md:flex-row h-screen">
-        <!-- Responsive sidebar -->
-        <div class="bg-gray-800 text-white w-full md:w-64 flex-shrink-0 flex flex-col">
-            <div class="p-4 border-b border-gray-700 flex items-center justify-center">
-                <img src="https://images.pexels.com/photos/3761509/pexels-photo-3761509.jpeg" alt="Logo" class="w-10 h-10 rounded-full border-2 border-cyan-400">
-                <span class="text-lg font-bold ml-2">Alerta 24</span>
-            </div>
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Alerta 24 Vecinos{% endblock %}
+
+{% block content %}
+<div class="flex flex-col md:flex-row min-h-screen">
+    <!-- Responsive sidebar -->
+    <div class="bg-gray-800 text-white w-full md:w-64 flex-shrink-0 flex flex-col">
+        <div class="p-4 border-b border-gray-700 flex items-center justify-center">
+            <svg class="w-10 h-10 text-white" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z"/>
+                <path d="M12 6C8.69 6 6 8.69 6 12C6 15.31 8.69 18 12 18C15.31 18 18 15.31 18 12C18 8.69 15.31 6 12 6ZM12 16C9.79 16 8 14.21 8 12C8 9.79 9.79 8 12 8C14.21 8 16 9.79 16 12C16 14.21 14.21 16 12 16Z"/>
+                <path d="M12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10Z"/>
+            </svg>
+            <span class="text-lg font-bold ml-2">Alerta 24</span>
+        </div>
             <nav class="flex-1 overflow-y-auto py-4">
                 <div class="px-4 space-y-1">
                     <a href="/admin/dashboard" class="flex items-center space-x-3 px-3 py-2 bg-gray-900 text-white rounded-lg">
@@ -45,12 +44,81 @@
                 </div>
             </header>
             <main class="p-6">
-                <div class="bg-white rounded-lg shadow p-6">
-                    <h2 class="text-lg font-semibold mb-4">Bienvenido al Panel de Administración</h2>
-                    <p>Seleccione una opción del menú lateral para comenzar.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold mb-2">Denuncias Totales</h3>
+                        <p class="text-3xl font-bold text-blue-600" id="total-complaints">0</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold mb-2">Denuncias Hoy</h3>
+                        <p class="text-3xl font-bold text-green-600" id="today-complaints">0</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold mb-2">Administradores</h3>
+                        <p class="text-3xl font-bold text-purple-600" id="admin-count">0</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold mb-4">Denuncias por Categoría</h3>
+                        <div id="categories-chart" class="h-64"></div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold mb-4">Últimas Denuncias</h3>
+                        <div id="recent-complaints" class="space-y-4"></div>
+                    </div>
                 </div>
             </main>
         </div>
     </div>
-</body>
-</html>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/api/admin/dashboard');
+                const data = await response.json();
+                
+                // Update stats
+                document.getElementById('total-complaints').textContent = data.stats.total_complaints;
+                document.getElementById('today-complaints').textContent = data.stats.today_complaints;
+                document.getElementById('admin-count').textContent = data.stats.admin_count;
+                
+                // Render categories chart (simplified)
+                const categoriesChart = document.getElementById('categories-chart');
+                data.categories.forEach(cat => {
+                    const div = document.createElement('div');
+                    div.className = 'mb-2';
+                    div.innerHTML = `
+                        <div class="flex justify-between mb-1">
+                            <span>${cat.category}</span>
+                            <span>${cat.count}</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${(cat.count / data.stats.total_complaints) * 100}%"></div>
+                        </div>
+                    `;
+                    categoriesChart.appendChild(div);
+                });
+                
+                // Render recent complaints
+                const recentComplaints = document.getElementById('recent-complaints');
+                data.recent_complaints.forEach(complaint => {
+                    const div = document.createElement('div');
+                    div.className = 'border-b pb-4';
+                    div.innerHTML = `
+                        <div class="flex justify-between">
+                            <strong>${complaint.category}</strong>
+                            <span class="text-sm text-gray-500">${new Date(complaint.timestamp).toLocaleString()}</span>
+                        </div>
+                        <p class="text-gray-600 mt-1">${complaint.description || 'Sin descripción'}</p>
+                    `;
+                    recentComplaints.appendChild(div);
+                });
+                
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+            }
+        });
+    </script>
+{% endblock %}
