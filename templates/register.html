@@ -9,9 +9,22 @@
             <h2 class="text-2xl font-bold text-gray-800">Crear una cuenta</h2>
         </div>
         
+        <div class="flex border-b mb-6">
+            <button class="tab-btn active py-2 px-4 font-medium" onclick="openTab(event, 'email-tab')">
+                <i class="fas fa-envelope mr-2"></i> Email
+            </button>
+            <button class="tab-btn py-2 px-4 font-medium" onclick="openTab(event, 'phone-tab')">
+                <i class="fas fa-phone mr-2"></i> Teléfono
+            </button>
+            <button class="tab-btn py-2 px-4 font-medium" onclick="openTab(event, 'social-tab')">
+                <i class="fas fa-users mr-2"></i> Redes Sociales
+            </button>
+        </div>
+
         <form id="registerForm" class="space-y-4">
-            <!-- Campos del formulario -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Pestaña Email -->
+            <div id="email-tab" class="tab-content active">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Nombre completo*</label>
                     <input type="text" name="fullname" required
@@ -118,13 +131,73 @@
         }
     }
 
+        // Mostrar errores de formulario
+        function showError(message, field = null) {
+            // Eliminar errores previos
+            document.querySelectorAll('.error-message').forEach(el => el.remove());
+            
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message text-red-600 text-sm mt-1';
+            errorDiv.textContent = message;
+            
+            if (field) {
+                field.parentNode.appendChild(errorDiv);
+                field.classList.add('border-red-500');
+            } else {
+                document.getElementById('registerForm').prepend(errorDiv);
+            }
+        }
+
+        // Validar formulario
+        function validateForm(form) {
+            let isValid = true;
+            
+            // Validar nombre completo
+            if (!form.fullname.value.trim()) {
+                showError('Nombre completo es requerido', form.fullname);
+                isValid = false;
+            }
+            
+            // Validar email
+            if (!form.email.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                showError('Email inválido', form.email);
+                isValid = false;
+            }
+            
+            // Validar teléfono
+            if (!form.phone.value.match(/^[0-9]{10,15}$/)) {
+                showError('Teléfono inválido', form.phone);
+                isValid = false;
+            }
+            
+            // Validar contraseña
+            if (form.password.value.length < 8) {
+                showError('La contraseña debe tener al menos 8 caracteres', form.password);
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            // Reset errores
+            document.querySelectorAll('input').forEach(input => {
+                input.classList.remove('border-red-500');
+            });
+            
+            if (!validateForm(this)) return;
+            
             const formData = {
-                fullname: this.querySelector('[name="fullname"]').value,
-                email: this.querySelector('[name="email"]').value,
-                phone: this.querySelector('[name="phone"]').value,
-                password: this.querySelector('[name="password"]').value
+                fullname: this.fullname.value,
+                email: this.email.value,
+                phone: this.phone.value,
+                password: this.password.value,
+                address: this.address.value,
+                city: this.city.value,
+                region: this.region.value,
+                neighborhood: this.neighborhood.value
             };
             
             try {
@@ -138,15 +211,46 @@
                 
                 const data = await response.json();
                 
-                if (data.status === 'success') {
-                    window.location.href = data.redirect;
+                if (response.ok) {
+                    window.location.href = data.redirect || '/profile-setup';
                 } else {
-                    alert(data.message || 'Error en el registro');
+                    showError(data.message || 'Error en el registro');
                 }
             } catch (error) {
+                showError('Error de conexión con el servidor');
                 console.error('Error:', error);
-                alert('Error al conectar con el servidor');
             }
         });
+
+        // Verificación de email
+        async function verifyEmail() {
+            const email = document.querySelector('[name="email"]').value;
+            if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                showError('Email inválido', document.querySelector('[name="email"]'));
+                return;
+            }
+            
+            try {
+                const response = await fetch('/verify-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('emailVerified').classList.remove('hidden');
+                    showError(''); // Limpiar errores
+                } else {
+                    showError(data.message || 'Error al verificar email');
+                }
+            } catch (error) {
+                showError('Error de conexión');
+                console.error('Error:', error);
+            }
+        }
 </script>
 {% endblock %}
