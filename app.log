@@ -29,3 +29,100 @@ AttributeError: 'NoneType' object has no attribute 'encode'
 2025-04-03 22:00:22,339 [INFO] Serving on http://0.0.0.0:8001
 2025-04-03 23:03:51,559 [INFO] Iniciando servidor en puerto 8001 para IPv4
 2025-04-03 23:03:51,561 [INFO] Serving on http://0.0.0.0:8001
+2025-04-04 15:59:42,517 [ERROR] El puerto 8001 está en uso
+2025-04-04 15:59:42,517 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 15:59:42,519 [ERROR] El puerto 8001 está en uso
+2025-04-04 15:59:42,519 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 15:59:42,522 [INFO] Serving on http://0.0.0.0:8002
+2025-04-04 15:59:43,673 [ERROR] El puerto 8001 está en uso
+2025-04-04 15:59:43,673 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 15:59:44,003 [ERROR] El puerto 8001 está en uso
+2025-04-04 15:59:44,008 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 15:59:44,080 [ERROR] El puerto 8001 está en uso
+2025-04-04 15:59:44,080 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 16:55:18,287 [INFO] Iniciando servidor en puerto 8001 para IPv4
+2025-04-04 16:55:18,289 [INFO] Iniciando servidor en puerto 8001 para IPv4
+2025-04-04 16:55:18,295 [INFO] Serving on http://0.0.0.0:8001
+2025-04-04 17:03:22,031 [ERROR] El puerto 8001 está en uso
+2025-04-04 17:03:22,034 [ERROR] El puerto 8001 está en uso
+2025-04-04 17:03:22,035 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 17:03:22,036 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 17:03:22,040 [ERROR] El puerto 8001 está en uso
+2025-04-04 17:03:22,040 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 17:03:22,040 [ERROR] El puerto 8001 está en uso
+2025-04-04 17:03:22,043 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 17:03:38,155 [ERROR] El puerto 8001 está en uso
+2025-04-04 17:03:38,156 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 17:03:38,240 [ERROR] El puerto 8001 está en uso
+2025-04-04 17:03:38,240 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 17:03:58,582 [ERROR] El puerto 8001 está en uso
+2025-04-04 17:03:58,582 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 17:03:58,660 [ERROR] El puerto 8001 está en uso
+2025-04-04 17:03:58,661 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 17:03:58,945 [ERROR] El puerto 8001 está en uso
+2025-04-04 17:03:58,946 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 17:03:58,981 [ERROR] El puerto 8001 está en uso
+2025-04-04 17:03:58,981 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:02:10,324 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:02:10,327 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:02:10,325 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:02:10,327 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:02:54,036 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:02:54,036 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:02:54,193 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:02:54,194 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:02:54,553 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:02:54,554 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:02:54,656 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:02:54,656 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:04:30,752 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:04:30,752 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:04:30,820 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:04:30,821 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:38:16,900 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:38:16,901 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:38:17,006 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:38:16,902 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:38:17,010 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:38:17,011 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:38:16,902 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:38:17,012 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:38:41,049 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:38:41,050 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:38:41,097 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:38:41,097 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:39:21,738 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:39:21,738 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:39:21,743 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:39:21,743 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:39:21,982 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:39:21,982 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:39:22,043 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:39:22,043 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:39:38,881 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:39:38,888 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-04 20:39:38,950 [ERROR] El puerto 8001 está en uso
+2025-04-04 20:39:38,950 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-05 00:55:28,138 [ERROR] Exception on /social-login/google [GET]
+Traceback (most recent call last):
+  File "/home/codespace/.python/current/lib/python3.10/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/codespace/.python/current/lib/python3.10/site-packages/flask/app.py", line 920, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "/home/codespace/.python/current/lib/python3.10/site-packages/flask/app.py", line 939, in finalize_request
+    response = self.make_response(rv)
+  File "/home/codespace/.python/current/lib/python3.10/site-packages/flask/app.py", line 1212, in make_response
+    raise TypeError(
+TypeError: The view function for 'social_login' did not return a valid response. The function either returned None or ended without a return statement.
+2025-04-05 01:34:03,931 [ERROR] El puerto 8001 está en uso
+2025-04-05 01:34:03,933 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-05 01:34:03,932 [ERROR] El puerto 8001 está en uso
+2025-04-05 01:34:03,934 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-05 18:09:26,215 [ERROR] El puerto 8001 está en uso
+2025-04-05 18:09:26,220 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-05 18:09:26,220 [ERROR] El puerto 8001 está en uso
+2025-04-05 18:09:26,222 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-05 19:15:36,721 [ERROR] El puerto 8001 está en uso
+2025-04-05 19:15:36,722 [ERROR] El puerto 8001 está en uso
+2025-04-05 19:15:36,723 [INFO] Iniciando servidor en puerto 8002 para IPv4
+2025-04-05 19:15:36,723 [INFO] Iniciando servidor en puerto 8002 para IPv4
